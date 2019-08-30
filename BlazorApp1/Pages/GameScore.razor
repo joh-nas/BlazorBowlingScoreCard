@@ -1,0 +1,89 @@
+﻿@page "/gamescore"
+@using BlazorApp1.Classes;
+<h3>GameScore</h3>
+<table>
+    <tr>
+        <th class="nameCol">Name</th>
+        @for (int i = 0; i < 9; i++)
+        {
+            <th colspan="2" class="scoreHeader">
+                @i
+            </th>
+        }
+        <th colspan="3" class="scoreHeader">10</th>
+        <th class="totalCol">Total</th>
+        <th class="maxCol">Max</th>
+    </tr>
+    <tr>
+        <td rowspan="2" class="nameCol nameText">Johan</td>
+        @for (int i = 0; i < 10; i++)
+        {
+            var frameNumber = i;
+            <td class="frame @SelectedCellClass(frameNumber, 1)" @onclick="@(() => SetFocus(frameNumber, 1))">
+                @frames.AllFrames[i].ShowShotScore(1)
+            </td>
+            <td class="frame @SelectedCellClass(frameNumber, 2)" @onclick="@(() => SetFocus(frameNumber, 2))">
+                @frames.AllFrames[i].ShowShotScore(2)
+            </td>
+            if (i == 9)
+            {
+                <td class="frame @SelectedCellClass(frameNumber, 3)" @onclick="@(() => SetFocus(frameNumber, 3))">
+                    @frames.AllFrames[i].ShowShotScore(3)
+                </td>
+            }
+        }
+
+
+        <td rowspan="2" class="totalCol totalText">@frames.AllFrames[9].Score</td>
+        <td rowspan="2" class="maxCol totalText">@frames.AllFrames[9].Score</td>
+    </tr>
+    <tr>
+        @for (int i = 0; i < 10; i++)
+        {
+            <td colspan="@TotalScoreColSpan(i+1)" class="scoreFooter frameTotal">
+                @frames.AllFrames[i].Score
+            </td>
+        }
+    </tr>
+</table>
+<ScoreInput ScoreClicked="AddScore" IsVisible="@ShowKeyboard"></ScoreInput>
+
+@code
+{
+    public Frames frames = new Frames();
+    public int CurrentFrame { get; set; } = 3;
+    public int CurrentShot { get; set; } = 1;
+
+    public bool ShowKeyboard { get; set; } = false;
+
+    public void AddScore(int score)
+    {
+        ShowKeyboard = false;
+        this.StateHasChanged();
+        
+        if(score >= 0 && score <= 10)
+            frames.AllFrames[CurrentFrame].SetShotScore(CurrentShot, score);
+    }
+
+    public void SetFocus(int frameNumber, int shotNumber)
+    {
+        CurrentFrame = frameNumber;
+        CurrentShot = shotNumber;
+        ShowKeyboard = true;
+        this.StateHasChanged();
+    }
+
+    public string SelectedCellClass(int frameNumber, int shotNumber)
+    {
+        if (CurrentFrame == frameNumber && CurrentShot == shotNumber) {
+            return "selectedCell";
+        }
+
+        return "";
+    }
+
+    public int TotalScoreColSpan(int frameNumber)
+    {
+        return frameNumber == 10 ? 3 : 2;
+    }
+}
