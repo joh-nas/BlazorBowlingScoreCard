@@ -71,8 +71,9 @@ namespace BlazorApp1.Classes
             {
                 if (One == 10 && FrameNumber != 10) return "";
                 if (FrameNumber == 10 && One == 10 && Two == 10) return "X";
-                if (One + Two == 10) return "/";
+                if (FrameNumber == 10 && One == 10 && Two == 0) return "-";
                 if (Two == 0) return "-";
+                if (One + Two == 10) return "/";
                 return Two.ToString();
             }
 

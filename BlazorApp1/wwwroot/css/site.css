@@ -192,7 +192,11 @@ th {
 }
 
 .clearShotResultBtn {
+    height: 50px;
     width: auto;
+    font-weight: bold;
+    font-size: 30px;
+    margin-left: 20px;
 }
 
 .buttonDiv {
@@ -204,6 +208,10 @@ th {
     padding: 3px 0px 3px 0px;
     text-align: center;
     height: 26px;
+}
+
+.isHidden {
+    display: none;
 }
 
 .scoreHeader {
@@ -218,6 +226,11 @@ th {
 
 .selectedCell {
     background-color: lightgrey;
+    text-align: center;
+}
+
+.errorCell {
+    background-color: lightcoral;
     text-align: center;
 }
 
@@ -242,6 +255,7 @@ th {
 
 .flex-active {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .flex-hidden {
@@ -249,12 +263,8 @@ th {
 }
 
 .flex-modal {
-    display: flex;
-    flex-direction: column;
-    width: 50rem;
     background-color: #fff;
-    border-radius: 4px;
     border: 1px solid #fff;
-    padding: 1.5rem;
+    padding: 1rem;
     z-index: 4;
 }

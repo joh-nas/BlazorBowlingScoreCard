@@ -4,8 +4,21 @@
 <div class="flex-container @(IsVisible ? "flex-active" : "flex-hidden")" @onclick="(() => SetScore(-1))">
     <div class="flex-overlay">
         <div class="flex-modal">
-            <button class="btn btn-primary" @onclick="(() => SetScore(0))">-</button>
-            <button class="btn btn-primary" @onclick="(() => SetScore(1))">1</button>
+            @for (int i=1; i<6; i++)
+            {
+                var tmp = i;
+                <button disabled="@Disabled(tmp)" class="shotResultBtn" @onclick="(() => SetScore(tmp))">@tmp</button>
+            }
+        </div>
+        <div class="flex-modal">
+            @for (int i = 6; i < 11; i++)
+            {
+                var tmp = i;
+                <button disabled="@Disabled(tmp)" class="shotResultBtn" @onclick="(() => SetScore(tmp))">@tmp</button>
+            }
+        </div>
+        <div class="flex-modal">
+            <button class="clearShotResultBtn" @onclick="(() => SetScore(0))">Clear</button>
         </div>
     </div>
 </div>
@@ -15,7 +28,15 @@
     public EventCallback<int> ScoreClicked { get; set; }
 
     [Parameter]
+    public List<int> PossibleInputs { get; set; }
+
+    [Parameter]
     public bool IsVisible { get; set; }
+
+    public bool Disabled(int buttonNumber)
+    {
+        return !PossibleInputs.Any(x => x == buttonNumber);
+    }
 
     public void SetScore(int score)
     {
