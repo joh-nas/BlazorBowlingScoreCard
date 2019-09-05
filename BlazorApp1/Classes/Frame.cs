@@ -50,11 +50,15 @@ namespace BlazorApp1.Classes
         {
             switch (shotNumber)
             {
-                case 1: One = score;
+                case 1: 
+                    One = score;
                     break;
-                case 2: Two = score;
+                case 2: 
+                    Two = score;
                     break;
-                case 3: Extra = score;
+                case 3: 
+                    if (FrameNumber != 10) throw new ApplicationException("ShotNumber 3 can only be used in frame 10.");
+                    Extra = score;
                     break;
                 default:
                     throw new ApplicationException("shotNumber has to be between 1 and 3.");
