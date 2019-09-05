@@ -11,7 +11,14 @@ namespace BlazorApp1.Classes
 
         public Frames()
         {
-            AllFrames = Enumerable.Range(1, 10).Select(x => new Frame(x)).ToArray();
+            AllFrames = Enumerable
+                .Range(1, 10)
+                .Select(x => {
+                    if (x == 10) return new LastFrame();
+                    return new Frame(); 
+                })
+                .ToArray();
+
             SetTestData();
             CalculateScore();
         }

@@ -74,10 +74,5 @@ namespace BlazorApp1.Classes
 
             return string.Empty;
         }
-
-        public int TotalScoreColSpan(int frameNumber)
-        {
-            return frameNumber == 9 ? 3 : 2;
-        }
     }
 }

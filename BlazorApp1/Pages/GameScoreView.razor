@@ -5,7 +5,7 @@
 <table>
     <tr>
         <th class="nameCol">Name</th>
-        @for (int i = 0; i < 9; i++)
+        @for (int i = 1; i < 10; i++)
         {
             <th colspan="2" class="scoreHeader">
                 @i
@@ -17,35 +17,41 @@
     </tr>
     <tr>
         <td rowspan="2" class="nameCol nameText">Johan</td>
-        @for (int i = 0; i < 10; i++)
+        @for (int i = 0; i < 9; i++)
         {
             var frameNumber = i;
-            <td class="frame @SelectedCellClass(frameNumber, 1) @ErrorCellClass(frameNumber)" @onclick="@(() => SetFocus(frameNumber, 1))">
-                @frames.GetShotScoreString(frameNumber, 1)
+            <td class="frame @SelectedCellClass(@frameNumber, 1) @ErrorCellClass(@frameNumber)" @onclick="@(() => @SetFocus(@frameNumber, 1))">
+                @frames.GetShotScoreString(@frameNumber, 1)
             </td>
-            <td class="frame @SelectedCellClass(frameNumber, 2) @ErrorCellClass(frameNumber)" @onclick="@(() => SetFocus(frameNumber, 2))">
-                @frames.GetShotScoreString(frameNumber, 2)
+            <td class="frame @SelectedCellClass(@frameNumber, 2) @ErrorCellClass(@frameNumber)" @onclick="@(() => SetFocus(@frameNumber, 2))">
+                @frames.GetShotScoreString(@frameNumber, 2)
             </td>
-            if (i == 9)
-            {
-                <td class="frame @SelectedCellClass(frameNumber, 3) @ErrorCellClass(frameNumber)" @onclick="@(() => SetFocus(frameNumber, 3))">
-                    @frames.GetShotScoreString(frameNumber, 3)
-                </td>
-            }
         }
+        <td class="frame @SelectedCellClass(9, 1) @ErrorCellClass(9)" @onclick="@(() => @SetFocus(9, 1))">
+            @frames.GetShotScoreString(9, 1)
+        </td>
+        <td class="frame @SelectedCellClass(9, 2) @ErrorCellClass(9)" @onclick="@(() => SetFocus(9, 2))">
+            @frames.GetShotScoreString(9, 2)
+        </td>
+        <td class="frame @SelectedCellClass(9, 3) @ErrorCellClass(9)" @onclick="@(() => SetFocus(9, 3))">
+            @frames.GetShotScoreString(9, 3)
+        </td>
 
 
         <td rowspan="2" class="totalCol totalText">@frames[9].Score</td>
         <td rowspan="2" class="maxCol totalText">@frames[9].Score</td>
     </tr>
     <tr>
-        @for (int i = 0; i < 10; i++)
+        @for (int i = 0; i < 9; i++)
         {
             var tmp = i;
-            <td colspan="@TotalScoreColSpan(tmp)" class="scoreFooter frameTotal">
-                @frames[tmp].Score
+            <td colspan="2" class="scoreFooter frameTotal">
+                @frames[@tmp].Score
             </td>
         }
+        <td colspan="3" class="scoreFooter frameTotal">
+            @frames[9].Score
+        </td>
     </tr>
 </table>
 <ScoreInputView ScoreClicked="AddScore" IsVisible="@ShowKeyboard" PossibleInputs="@PossibleInputs" IsStrikePossible="@IsStrikePossible" IsSparePossible="@IsSparePossible" SpareShotCount="@SpareShotCount"></ScoreInputView>
