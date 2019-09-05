@@ -21,34 +21,34 @@
         {
             var frameNumber = i;
             <td class="frame @SelectedCellClass(frameNumber, 1) @ErrorCellClass(frameNumber)" @onclick="@(() => SetFocus(frameNumber, 1))">
-                @frames.AllFrames[i].ShowShotScore(1)
+                @frames.GetShotScoreString(frameNumber, 1)
             </td>
             <td class="frame @SelectedCellClass(frameNumber, 2) @ErrorCellClass(frameNumber)" @onclick="@(() => SetFocus(frameNumber, 2))">
-                @frames.AllFrames[i].ShowShotScore(2)
+                @frames.GetShotScoreString(frameNumber, 2)
             </td>
             if (i == 9)
             {
                 <td class="frame @SelectedCellClass(frameNumber, 3) @ErrorCellClass(frameNumber)" @onclick="@(() => SetFocus(frameNumber, 3))">
-                    @frames.AllFrames[i].ShowShotScore(3)
+                    @frames.GetShotScoreString(frameNumber, 3)
                 </td>
             }
         }
 
 
-        <td rowspan="2" class="totalCol totalText">@frames.AllFrames[9].Score</td>
-        <td rowspan="2" class="maxCol totalText">@frames.AllFrames[9].Score</td>
+        <td rowspan="2" class="totalCol totalText">@frames[9].Score</td>
+        <td rowspan="2" class="maxCol totalText">@frames[9].Score</td>
     </tr>
     <tr>
         @for (int i = 0; i < 10; i++)
         {
             var tmp = i;
             <td colspan="@TotalScoreColSpan(tmp)" class="scoreFooter frameTotal">
-                @frames.AllFrames[tmp].Score
+                @frames[tmp].Score
             </td>
         }
     </tr>
 </table>
-<ScoreInputView ScoreClicked="AddScore" IsVisible="@ShowKeyboard" PossibleInputs="@PossibleInputs"></ScoreInputView>
+<ScoreInputView ScoreClicked="AddScore" IsVisible="@ShowKeyboard" PossibleInputs="@PossibleInputs" IsStrikePossible="@IsStrikePossible" IsSparePossible="@IsSparePossible" SpareShotCount="@SpareShotCount"></ScoreInputView>
 
 @code
 {

@@ -19,7 +19,9 @@
             }
         </div>
         <div class="flex-modal">
-            <button class="clearShotResultBtn" @onclick="(() => SetScore(0))">Clear</button>
+            <button disabled="@(!IsStrikePossible)" class="clearShotResultBtn" @onclick="(() => SetScore(10))">X</button>
+            <button disabled="@(!IsSparePossible)" class="clearShotResultBtn" @onclick="(() => SetScore(SpareShotCount))">/</button>
+            <button class="clearShotResultBtn" @onclick="(() => SetScore(0))">-</button>
         </div>
     </div>
 </div>

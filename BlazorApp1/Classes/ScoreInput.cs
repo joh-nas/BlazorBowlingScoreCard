@@ -10,7 +10,16 @@ namespace BlazorApp1.Classes
         public EventCallback<int> ScoreClicked { get; set; }
 
         [Parameter]
-        public List<int> PossibleInputs { get; set; }
+        public int[] PossibleInputs { get; set; }
+
+        [Parameter]
+        public bool IsStrikePossible { get; set; }
+
+        [Parameter]
+        public bool IsSparePossible { get; set; }
+
+        [Parameter]
+        public int SpareShotCount { get; set; }
 
         [Parameter]
         public bool IsVisible { get; set; }

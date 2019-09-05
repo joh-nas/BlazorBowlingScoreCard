@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace BlazorApp1.Classes
 {
@@ -26,6 +27,43 @@ namespace BlazorApp1.Classes
             {
                 if (value < 0 || value > 10) throw new ApplicationException("You can shoot between 0 and 10 pins in one shot.");
                 _two = value;
+            }
+        }
+
+        internal int[] GetPossibleInputs(int shotNumber)
+        {
+            if (shotNumber == 1) return Enumerable.Range(1, 10).ToArray();
+            if (shotNumber == 2 && FrameNumber != 10)
+            {
+                if (One != 10) return Enumerable.Range(1, 10 - One).ToArray();
+                if (One == 10) return new int[0];
+            }
+            if (shotNumber == 2 && FrameNumber == 10)
+            {
+                if (One != 10) return Enumerable.Range(1, 10 - One).ToArray();
+                if (One == 10) return Enumerable.Range(1, 10).ToArray();
+            }
+            if (shotNumber == 3 && FrameNumber == 10)
+            {
+                if (One + Two == 10 || One + Two == 20) return Enumerable.Range(1, 10).ToArray();
+                if (One == 10) return Enumerable.Range(1, 10 - Two).ToArray();
+            }
+
+            return new int[0];
+        }
+
+        internal void AddScore(int shotNumber, int score)
+        {
+            if (score >= 0 && score <= 10)
+                SetShotScore(shotNumber, score);
+            if (shotNumber == 1 && score == 10) SetShotScore(2, 0);
+
+            if (FrameNumber == 10)
+            {
+                if (One != 10 && One + Two != 10)
+                {
+                    SetShotScore(3, 0);
+                }
             }
         }
 
@@ -97,6 +135,39 @@ namespace BlazorApp1.Classes
             }
 
             return "";
+        }
+
+        internal int SpareShotCount(int shotNumber)
+        {
+            if (shotNumber == 1) return 0;
+            if (shotNumber == 2 && One != 10) return 10 - One;
+            if (shotNumber == 3 && FrameNumber == 10 && ((One == 0 || One == 10) && Two != 10)) return Extra - Two;
+            return 0;
+        }
+
+        internal bool IsStrikePossible(int shotNumber)
+        {
+            if (shotNumber == 1) return true;
+            if (shotNumber == 2 && FrameNumber == 10 && One == 10) return true;
+            if (shotNumber == 3 && FrameNumber == 10 && (One + Two == 10 || One + Two == 20)) return true;
+            return false;
+        }
+
+        internal bool IsSparePossible(int shotNumber)
+        {
+            if (shotNumber == 1) return false;
+            if (shotNumber == 2 && One != 10) return true;
+            if (shotNumber == 3 && FrameNumber == 10 && (One + Two == 10 || One + Two == 20)) return true;
+            return false;
+        }
+
+        internal void VerifyFrameScore()
+        {
+            if (FrameNumber == 10)
+            {
+                if (One + Two + Extra > 30) throw new ApplicationException("There are only 30 pins to knock down in the last frame.");
+            }
+            else if (One + Two > 10) throw new ApplicationException("There are only 10 pins to knock down in each frame.");
         }
 
         public string ShowCorrectCharacter(int shotCount)

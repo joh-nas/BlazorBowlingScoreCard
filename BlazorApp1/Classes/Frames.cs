@@ -11,29 +11,65 @@ namespace BlazorApp1.Classes
 
         public Frames()
         {
-            var tmpFrames = new List<Frame>();
-
-            for (int i = 0; i < 10; i++)
-            {
-                var newFrame = new Frame(i + 1);
-                tmpFrames.Add(newFrame);
-            }
-
-            AllFrames = tmpFrames.ToArray();
+            AllFrames = Enumerable.Range(1, 10).Select(x => new Frame(x)).ToArray();
             SetTestData();
             CalculateScore();
+        }
+
+        public void AddScore(int frameNumber, int shotNumber, int score)
+        {
+            var curFrame = AllFrames[frameNumber];
+            curFrame.AddScore(shotNumber, score);
+        }
+
+        internal int[] GetPossibleInputs(int frameNumber, int shotNumber)
+        {
+            var curFrame = AllFrames[frameNumber];
+            return curFrame.GetPossibleInputs(shotNumber);
+        }
+
+        internal int SpareShotCount(int frameNumber, int shotNumber)
+        {
+            var curFrame = AllFrames[frameNumber];
+            return curFrame.SpareShotCount(shotNumber);
+        }
+
+        internal bool IsStrikePossible(int frameNumber, int shotNumber)
+        {
+            var curFrame = AllFrames[frameNumber];
+            return curFrame.IsStrikePossible(shotNumber);
+        }
+
+        internal bool IsSparePossible(int frameNumber, int shotNumber)
+        {
+            var curFrame = AllFrames[frameNumber];
+            return curFrame.IsSparePossible(shotNumber);
         }
 
         public void VerifyFrameScore()
         {
             foreach (var frame in AllFrames)
             {
-                if (frame.FrameNumber == 10)
-                {
-                    if (frame.One + frame.Two + frame.Extra > 30) throw new ApplicationException("There are only 30 pins to knock down in the last frame.");
-                }
-                else if (frame.One + frame.Two > 10) throw new ApplicationException("There are only 10 pins to knock down in each frame.");
+                frame.VerifyFrameScore();
             }
+        }
+
+        public Frame this[int index]
+        {
+            get
+            {
+                return AllFrames[index];
+            }
+        }
+
+        public void SetShotScore(int frameNumber, int shotNumber, int score)
+        {
+            AllFrames[frameNumber].SetShotScore(shotNumber, score);
+        }
+
+        public string GetShotScoreString(int frameNumber, int shotNumber)
+        {
+            return AllFrames[frameNumber].ShowShotScore(shotNumber);
         }
 
         public void CalculateScore()
@@ -43,41 +79,44 @@ namespace BlazorApp1.Classes
             var score = 0;
             for (int i = 0; i < 10; i++)
             {
-                score += AllFrames[i].One;
-                score += AllFrames[i].Two;
-                score += AllFrames[i].Extra;
+                var current = AllFrames[i];
+                score += current.One;
+                score += current.Two;
+                score += current.Extra;
 
                 if (i < 9)
                 {
-                    if (AllFrames[i].One == 10)
+                    var next = AllFrames[i + 1];
+                    if (current.One == 10)
                     {
-                        score += AllFrames[i + 1].One;
-                        if (AllFrames[i + 1].One == 10)
+                        score += next.One;
+                        if (next.One == 10)
                         {
                             if (i + 1 == 9)
                             {
-                                score += AllFrames[i + 1].Two;
+                                score += next.Two;
                             }
                             else
                             {
-                                score += AllFrames[i + 2].One;
+                                var secondNext = AllFrames[i + 2];
+                                score += secondNext.One;
                             }
                         }
                         else
                         {
-                            score += AllFrames[i + 1].Two;
+                            score += next.Two;
                         }
                     }
                     else
                     {
-                        if (AllFrames[i].One + AllFrames[i].Two == 10)
+                        if (current.One + current.Two == 10)
                         {
-                            score += AllFrames[i + 1].One;
+                            score += next.One;
                         }
                     }
                 }
 
-                AllFrames[i].Score = score;
+                current.Score = score;
             }
         }
 
