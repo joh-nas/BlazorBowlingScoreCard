@@ -1,0 +1,14 @@
+﻿@page "/gameview"
+@inherits Game;
+@using BlazorApp1.Classes;
+<h3>Bowling Score Board</h3>
+@for (int i = 0; i < @Players.Length; i++)
+{
+    <GameScoreView></GameScoreView>
+}
+
+<button class="shotResultBtn" @onclick="() => AddPlayer()">+</button>
+
+@code
+{
+}

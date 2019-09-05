@@ -2,27 +2,25 @@
 @inherits ScoreInput;
 @using BlazorApp1.Classes;
 
-<div class="flex-container @(IsVisible ? "flex-active" : "flex-hidden")" @onclick="(() => SetScore(-1))">
-    <div class="flex-overlay">
-        <div class="flex-modal">
-            @for (int i=1; i < 6; i++)
-            {
-                var tmp = i;
-                <button disabled="@Disabled(tmp)" class="shotResultBtn" @onclick="(() => SetScore(tmp))">@tmp</button>
-            }
-        </div>
-        <div class="flex-modal">
-            @for (int i = 6; i < 11; i++)
-            {
-                var tmp = i;
-                <button disabled="@Disabled(tmp)" class="shotResultBtn" @onclick="(() => SetScore(tmp))">@tmp</button>
-            }
-        </div>
-        <div class="flex-modal">
-            <button disabled="@(!IsStrikePossible)" class="shotResultBtn" @onclick="(() => SetScore(10))">X</button>
-            <button disabled="@(!IsSparePossible)" class="shotResultBtn" @onclick="(() => SetScore(SpareShotCount))">/</button>
-            <button class="shotResultBtn" @onclick="(() => SetScore(0))">-</button>
-        </div>
+<div class="@(IsVisible ? "" : "collapse")" @onclick="(() => SetScore(-1))">
+    <div class="flex-modal">
+        @for (int i=1; i < 6; i++)
+        {
+            var tmp = i;
+            <button disabled="@Disabled(tmp)" class="shotResultBtn" @onclick="(() => SetScore(tmp))">@tmp</button>
+        }
+    </div>
+    <div class="flex-modal">
+        @for (int i = 6; i < 11; i++)
+        {
+            var tmp = i;
+            <button disabled="@Disabled(tmp)" class="shotResultBtn" @onclick="(() => SetScore(tmp))">@tmp</button>
+        }
+    </div>
+    <div class="flex-modal">
+        <button disabled="@(!IsStrikePossible)" class="shotResultBtn" @onclick="(() => SetScore(10))">X</button>
+        <button disabled="@(!IsSparePossible)" class="shotResultBtn" @onclick="(() => SetScore(SpareShotCount))">/</button>
+        <button class="shotResultBtn" @onclick="(() => SetScore(0))">-</button>
     </div>
 </div>
 @code {

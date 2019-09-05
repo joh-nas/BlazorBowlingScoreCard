@@ -21,6 +21,7 @@ namespace BlazorApp1.Classes
 
             frames.AddScore(CurrentFrame, CurrentShot, score);
             frames.CalculateScore();
+            StateHasChanged();
         }
 
         public void SetFocus(int frameNumber, int shotNumber)
@@ -32,6 +33,7 @@ namespace BlazorApp1.Classes
             IsStrikePossible = frames.IsStrikePossible(frameNumber, shotNumber);
             SpareShotCount = frames.SpareShotCount(frameNumber, shotNumber);
             ShowKeyboard = true;
+            StateHasChanged();
         }
 
         public int[] GetPossibleInputs()
