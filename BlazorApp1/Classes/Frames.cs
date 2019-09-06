@@ -19,7 +19,7 @@ namespace BlazorApp1.Classes
                 })
                 .ToArray();
 
-            SetTestData();
+            //SetTestData();
             CalculateScore();
         }
 

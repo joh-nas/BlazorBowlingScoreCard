@@ -4,7 +4,7 @@
 <h3>Bowling Score Board</h3>
 @for (int i = 0; i < @Players.Length; i++)
 {
-    <GameScoreView></GameScoreView>
+    <GameScoreView PlayerName="@Players[i]"></GameScoreView>
 }
 
 <button class="shotResultBtn" @onclick="() => AddPlayer()">+</button>

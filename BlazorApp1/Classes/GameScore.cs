@@ -6,7 +6,8 @@ namespace BlazorApp1.Classes
 {
     public class GameScore : ComponentBase
     {
-        public Frames frames = new Frames();
+        [Parameter]
+        public string PlayerName { get; set; }
         public int CurrentFrame { get; set; } = 3;
         public int CurrentShot { get; set; } = 1;
         public bool ShowKeyboard { get; set; } = false;
@@ -14,6 +15,8 @@ namespace BlazorApp1.Classes
         public bool IsSparePossible { get; private set; }
         public bool IsStrikePossible { get; private set; }
         public int SpareShotCount { get; private set; }
+
+        public Frames frames = new Frames();
 
         public void AddScore(int score)
         {
