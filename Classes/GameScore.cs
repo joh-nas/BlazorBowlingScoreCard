@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,6 +11,7 @@ namespace BlazorBowlingScoreCard.Classes
         public string PlayerName { get; set; }
         public int CurrentFrame { get; set; } = 0;
         public int CurrentShot { get; set; } = 1;
+        public double XPos { get; set; }
         public bool ShowKeyboard { get; set; } = false;
         public int[] PossibleInputs { get; set; } = new int[0];
         public bool IsSparePossible { get; private set; }
@@ -27,7 +29,7 @@ namespace BlazorBowlingScoreCard.Classes
             StateHasChanged();
         }
 
-        public void SetFocus(int frameNumber, int shotNumber)
+        public void SetFocus(MouseEventArgs args, int frameNumber, int shotNumber)
         {
             CurrentFrame = frameNumber;
             CurrentShot = shotNumber;
@@ -36,6 +38,7 @@ namespace BlazorBowlingScoreCard.Classes
             IsStrikePossible = frames.IsStrikePossible(frameNumber, shotNumber);
             SpareShotCount = frames.SpareShotCount(frameNumber, shotNumber);
             ShowKeyboard = true;
+            XPos = args.ClientX;
             StateHasChanged();
         }
 

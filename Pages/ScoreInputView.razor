@@ -2,7 +2,7 @@
 @inherits ScoreInput;
 @using BlazorBowlingScoreCard.Classes;
 
-<div class="scoreInputPosition @(IsVisible ? "" : "collapse")" @onclick="(() => SetScore(-1))">
+<div style="left:@(XPos)px" class="scoreInputPosition @(IsVisible ? "" : "collapse")" @onclick="(() => SetScore(-1))">
     <div class="flex-modal">
         @for (int i=1; i < 6; i++)
         {

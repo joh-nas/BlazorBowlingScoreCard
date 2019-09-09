@@ -6,6 +6,8 @@ namespace BlazorBowlingScoreCard.Classes
 {
     public class ScoreInput : ComponentBase
     {
+        private double _xPos;
+
         [Parameter]
         public EventCallback<int> ScoreClicked { get; set; }
 
@@ -23,6 +25,9 @@ namespace BlazorBowlingScoreCard.Classes
 
         [Parameter]
         public bool IsVisible { get; set; }
+
+        [Parameter]
+        public double XPos { get => _xPos; set => _xPos = value - 200; }
 
         public bool Disabled(int buttonNumber)
         {
