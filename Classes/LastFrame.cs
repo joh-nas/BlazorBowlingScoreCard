@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace BlazorApp1.Classes
+namespace BlazorBowlingScoreCard.Classes
 {
     public class LastFrame : Frame
     {

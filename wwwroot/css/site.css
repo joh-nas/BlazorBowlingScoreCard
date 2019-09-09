@@ -1,0 +1,120 @@
+﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+.gameboard {
+    margin: 10px;
+}
+
+html, body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+app {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+table, th, td {
+    border: 2px solid;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #f1f1f1;
+}
+
+.nameCol {
+    width: 150px;
+    text-align: center;
+}
+
+.totalCol {
+    width: 150px;
+    text-align: center;
+}
+
+.clearButton {
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.totalText {
+    background-color: #f1f1f1;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nameText {
+    background-color: #f1f1f1;
+    font-size: 24px;
+    font-weight: bold;
+    border: 0px;
+}
+
+.maxCol {
+    width: 150px;
+    text-align: center;
+}
+
+.frameTotal {
+    background-color: #f1f1f1;
+    text-align: center;
+    height: 26px;
+}
+
+.shotResultBtn {
+    height: 50px;
+    width: 50px;
+    font-weight: bold;
+    font-size: 30px;
+    margin-left: 20px;
+}
+
+.buttonDiv {
+    margin: 20px 100px 20px 100px;
+}
+
+.frame {
+    width: 50px;
+    padding: 3px 0px 3px 0px;
+    text-align: center;
+    height: 26px;
+}
+
+.isHidden {
+    display: none;
+}
+
+.scoreHeader {
+    padding: 3px 0px 3px 0px;
+    text-align: center;
+}
+
+.scoreFooter {
+    padding: 3px 0px 3px 0px;
+    text-align: center;
+}
+
+.selectedCell {
+    background-color: lightgrey;
+    text-align: center;
+}
+
+.errorCell {
+    background-color: lightcoral;
+    text-align: center;
+}
+
+.flex-modal {
+    background-color: #fff;
+    border: 1px solid #fff;
+    padding: 1rem;
+    z-index: 4;
+}
+
+.scoreInputPosition {
+    position: relative;
+    left: 200px;
+}

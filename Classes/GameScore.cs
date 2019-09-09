@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BlazorApp1.Classes
+namespace BlazorBowlingScoreCard.Classes
 {
     public class GameScore : ComponentBase
     {
         [Parameter]
         public string PlayerName { get; set; }
-        public int CurrentFrame { get; set; } = 3;
+        public int CurrentFrame { get; set; } = 0;
         public int CurrentShot { get; set; } = 1;
         public bool ShowKeyboard { get; set; } = false;
         public int[] PossibleInputs { get; set; } = new int[0];

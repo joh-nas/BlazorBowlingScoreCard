@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorApp1.Classes
+namespace BlazorBowlingScoreCard.Classes
 {
     public class User
     {

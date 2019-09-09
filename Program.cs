@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Blazor.Hosting;
 
-namespace BlazorApp1
+namespace BlazorBowlingScoreCard
 {
     public class Program
     {

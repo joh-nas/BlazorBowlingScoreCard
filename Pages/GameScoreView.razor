@@ -1,6 +1,6 @@
-﻿@page "/gamescoreview"
-@inherits GameScore;
-@using BlazorApp1.Classes;
+﻿@inherits GameScore;
+@using BlazorBowlingScoreCard.Classes;
+@using BlazorBowlingScoreCard.Pages;
 <table class="gameboard">
     <tr>
         <th class="nameCol">Name</th>
@@ -15,7 +15,7 @@
         <th class="maxCol">Max</th>
     </tr>
     <tr>
-        <td rowspan="2" class="nameCol nameText"><input @bind="@PlayerName" /></td>
+        <td rowspan="2" class="nameCol nameText"><input class="nameText" @bind="@PlayerName" /></td>
         @for (int i = 0; i < 9; i++)
         {
             var frameNumber = i;
