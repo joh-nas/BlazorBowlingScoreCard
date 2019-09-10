@@ -83,7 +83,7 @@ namespace BlazorBowlingScoreCard.Classes
             if (shotNumber == 3)
             {
                 if (One + Two < 10) return "";
-                if (One == 10 && Two == 10) return ShowCorrectCharacter(Extra);
+                if (One == 10 && Two == 10 || One + Two == 10) return ShowCorrectCharacter(Extra);
                 if (One == 10 && Two != 10)
                 {
                     if (Extra == 0) return "-";
@@ -119,6 +119,38 @@ namespace BlazorBowlingScoreCard.Classes
             if (shotNumber == 2 && One != 10) return true;
             if (shotNumber == 3 && One == 10 && Two != 10) return true;
             return false;
+        }
+
+        public override (int NextFrame, int NextShot) GetNextShot(int frameNumber, int shotNumber)
+        {
+            if (shotNumber == 2)
+            {
+                shotNumber = 3;
+                return (frameNumber, shotNumber);
+            }
+
+            if (shotNumber == 1)
+            {
+                if (One == 10)
+                {
+                    shotNumber++;
+                    return (frameNumber, shotNumber);
+                }
+                shotNumber = 2;
+                return (frameNumber, shotNumber);
+            }
+
+            if (shotNumber == 2)
+            {
+                if (One == 10 || One + Two == 10)
+                {
+                    shotNumber = 3;
+                    return (frameNumber, shotNumber);
+                }
+            }
+            frameNumber++;
+            shotNumber = 1;
+            return (frameNumber, shotNumber);
         }
 
         internal override void VerifyFrameScore()

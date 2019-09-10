@@ -1,6 +1,7 @@
 ﻿@inherits GameScore;
 @using BlazorBowlingScoreCard.Classes;
 @using BlazorBowlingScoreCard.Pages;
+
 <table class="gameboard">
     <tr>
         <th class="nameCol">Name</th>
@@ -19,37 +20,46 @@
         @for (int i = 0; i < 9; i++)
         {
             var frameNumber = i;
-            <td class="frame @SelectedCellClass(@frameNumber, 1) @ErrorCellClass(@frameNumber)" @onclick="@((args) => @SetFocus(args, @frameNumber, 1))">
-                @frames.GetShotScoreString(@frameNumber, 1)
+            <td id="@FrameId(frameNumber, 1)" 
+                class="frame @SelectedCellClass(@frameNumber, 1) @ErrorCellClass(@frameNumber)" 
+                @onclick="@((args) => @SetFocus(args, @frameNumber, 1))">
+                    @Frames.GetShotScoreString(@frameNumber, 1)
             </td>
-            <td class="frame @SelectedCellClass(@frameNumber, 2) @ErrorCellClass(@frameNumber)" @onclick="@((args) => @SetFocus(args, @frameNumber, 2))">
-                @frames.GetShotScoreString(@frameNumber, 2)
+            <td id="@FrameId(frameNumber, 2)" 
+                class="frame @SelectedCellClass(@frameNumber, 2) @ErrorCellClass(@frameNumber)" 
+                @onclick="@((args) => @SetFocus(args, @frameNumber, 2))">
+                    @Frames.GetShotScoreString(@frameNumber, 2)
             </td>
         }
-        <td class="frame @SelectedCellClass(9, 1) @ErrorCellClass(9)" @onclick="@((args) => @SetFocus(args, 9, 1))">
-            @frames.GetShotScoreString(9, 1)
+        <td id="@FrameId(9, 1)" 
+            class="frame @SelectedCellClass(9, 1) @ErrorCellClass(9)" 
+            @onclick="@((args) => @SetFocus(args, 9, 1))">
+                @Frames.GetShotScoreString(9, 1)
         </td>
-        <td class="frame @SelectedCellClass(9, 2) @ErrorCellClass(9)" @onclick="@((args) => SetFocus(args, 9, 2))">
-            @frames.GetShotScoreString(9, 2)
+        <td id="@FrameId(9, 2)" 
+            class="frame @SelectedCellClass(9, 2) @ErrorCellClass(9)" 
+            @onclick="@((args) => SetFocus(args, 9, 2))">
+                @Frames.GetShotScoreString(9, 2)
         </td>
-        <td class="frame @SelectedCellClass(9, 3) @ErrorCellClass(9)" @onclick="@((args) => SetFocus(args, 9, 3))">
-            @frames.GetShotScoreString(9, 3)
+        <td id="@FrameId(9, 3)" 
+            class="frame @SelectedCellClass(9, 3) @ErrorCellClass(9)" 
+            @onclick="@((args) => SetFocus(args, 9, 3))">
+                @Frames.GetShotScoreString(9, 3)
         </td>
 
-
-        <td rowspan="2" class="totalCol totalText">@frames[9].Score</td>
-        <td rowspan="2" class="maxCol totalText">@frames[9].Score</td>
+        <td rowspan="2" class="totalCol totalText">@Frames[9].Score</td>
+        <td rowspan="2" class="maxCol totalText">@Frames[9].Score</td>
     </tr>
     <tr>
         @for (int i = 0; i < 9; i++)
         {
             var tmp = i;
             <td colspan="2" class="scoreFooter frameTotal">
-                @frames[@tmp].Score
+                @Frames[@tmp].Score
             </td>
         }
         <td colspan="3" class="scoreFooter frameTotal">
-            @frames[9].Score
+            @Frames[9].Score
         </td>
     </tr>
 </table>

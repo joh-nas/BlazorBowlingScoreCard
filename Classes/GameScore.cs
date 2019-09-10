@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using System.Collections.Generic;
-using System.Linq;
+using System;
+using Microsoft.JSInterop;
+using System.Threading.Tasks;
 
 namespace BlazorBowlingScoreCard.Classes
 {
@@ -9,42 +10,83 @@ namespace BlazorBowlingScoreCard.Classes
     {
         [Parameter]
         public string PlayerName { get; set; }
-        public int CurrentFrame { get; set; } = 0;
-        public int CurrentShot { get; set; } = 1;
-        public double XPos { get; set; }
+        public int CurrentFrame { get; set; }
+        public int CurrentShot { get; set; }
+        public int XPos { get => _xPos; 
+            set 
+            {
+                _xPos = value;
+                SetFocusInternal(CurrentFrame, CurrentShot);
+            }
+        }
         public bool ShowKeyboard { get; set; } = false;
         public int[] PossibleInputs { get; set; } = new int[0];
         public bool IsSparePossible { get; private set; }
         public bool IsStrikePossible { get; private set; }
         public int SpareShotCount { get; private set; }
+        [Inject]
+        public IJSRuntime JsRuntime { get; set; }
 
-        public Frames frames = new Frames();
+        public Frames Frames = new Frames();
+        private int _xPos;
+
+        public GameScore()
+        {
+            CurrentFrame = 0;
+            CurrentShot = 1;
+        }
 
         public void AddScore(int score)
         {
             ShowKeyboard = false;
+            if (score == -1) return;
 
-            frames.AddScore(CurrentFrame, CurrentShot, score);
-            frames.CalculateScore();
+            Frames.AddScore(CurrentFrame, CurrentShot, score);
+            SetNextShot();
+            Frames.CalculateScore();
             StateHasChanged();
+        }
+
+        private void SetNextShot()
+        {
+            var nextShot = Frames[CurrentFrame].GetNextShot(CurrentFrame, CurrentShot);
+            CurrentFrame = nextShot.NextFrame;
+            CurrentShot = nextShot.NextShot;
+            var frameId = FrameId(CurrentFrame, CurrentShot);
+            SetElementXPos(frameId); // Async call, the rest is done in XPos Property
+        }
+
+        public async void SetElementXPos(string frameId)
+        {
+            XPos = (int)await JsRuntime.InvokeAsync<double>("JsInteropFunctions.GetXPos", new[] { frameId });
         }
 
         public void SetFocus(MouseEventArgs args, int frameNumber, int shotNumber)
         {
+
             CurrentFrame = frameNumber;
             CurrentShot = shotNumber;
+            XPos = (int)args.ClientX;
+        }
+
+        public void SetFocusInternal(int frameNumber, int shotNumber)
+        {
             PossibleInputs = GetPossibleInputs();
-            IsSparePossible = frames.IsSparePossible(frameNumber, shotNumber);
-            IsStrikePossible = frames.IsStrikePossible(frameNumber, shotNumber);
-            SpareShotCount = frames.SpareShotCount(frameNumber, shotNumber);
+            IsSparePossible = Frames.IsSparePossible(frameNumber, shotNumber);
+            IsStrikePossible = Frames.IsStrikePossible(frameNumber, shotNumber);
+            SpareShotCount = Frames.SpareShotCount(frameNumber, shotNumber);
             ShowKeyboard = true;
-            XPos = args.ClientX;
             StateHasChanged();
         }
 
         public int[] GetPossibleInputs()
         {
-            return frames.GetPossibleInputs(CurrentFrame, CurrentShot);
+            return Frames.GetPossibleInputs(CurrentFrame, CurrentShot);
+        }
+
+        public string FrameId(int frameNumber, int shotNumber)
+        {
+            return $"{frameNumber}-{shotNumber}";
         }
 
         public string SelectedCellClass(int frameNumber, int shotNumber)
@@ -59,7 +101,7 @@ namespace BlazorBowlingScoreCard.Classes
 
         public string ErrorCellClass(int frameNumber)
         {
-            var curFrame = frames[frameNumber];
+            var curFrame = Frames[frameNumber];
             if (frameNumber != 9)
             {
                 if (curFrame.One + curFrame.Two > 10)

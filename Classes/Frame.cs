@@ -125,6 +125,27 @@ namespace BlazorBowlingScoreCard.Classes
             if (One + Two > 10) throw new ApplicationException("There are only 10 pins to knock down in each frame.");
         }
 
+        public virtual (int NextFrame, int NextShot) GetNextShot(int frameNumber, int shotNumber)
+        {
+            if (shotNumber == 1)
+            {
+                if (One == 10)
+                {
+                    frameNumber++;
+                    return (frameNumber, shotNumber);
+                }
+                shotNumber = 2;
+                return (frameNumber, shotNumber);
+            }
+
+            if (shotNumber == 2)
+            {
+                frameNumber++;
+                shotNumber = 1;
+            }
+            return (frameNumber, shotNumber);
+        }
+
         public string ShowCorrectCharacter(int shotCount)
         {
             if (shotCount == 0) return "-";

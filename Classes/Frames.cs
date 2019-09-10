@@ -8,6 +8,7 @@ namespace BlazorBowlingScoreCard.Classes
     public class Frames
     {
         public Frame[] AllFrames { get; set; }
+        public (int Frame, int shot) LatestPlayedFrame { get; set; } = (0, 0);
 
         public Frames()
         {
@@ -27,6 +28,7 @@ namespace BlazorBowlingScoreCard.Classes
         {
             var curFrame = AllFrames[frameNumber];
             curFrame.AddScore(shotNumber, score);
+            UpdateLatestPlayedFrame(frameNumber, shotNumber);
         }
 
         internal int[] GetPossibleInputs(int frameNumber, int shotNumber)
@@ -69,13 +71,31 @@ namespace BlazorBowlingScoreCard.Classes
             }
         }
 
-        public void SetShotScore(int frameNumber, int shotNumber, int score)
+        private void UpdateLatestPlayedFrame(int frameNumber, int shotNumber)
         {
-            AllFrames[frameNumber].SetShotScore(shotNumber, score);
+            var latestFrame = Math.Max(LatestPlayedFrame.Frame, frameNumber);
+            if (latestFrame == LatestPlayedFrame.Frame)
+            {
+                var latestShot = Math.Max(shotNumber, LatestPlayedFrame.shot);
+                LatestPlayedFrame = (latestFrame, latestShot);
+            }
+            else if (latestFrame > LatestPlayedFrame.Frame)
+            {
+                var latestShot = shotNumber;
+                LatestPlayedFrame = (latestFrame, latestShot);
+            }
         }
 
         public string GetShotScoreString(int frameNumber, int shotNumber)
         {
+            if (frameNumber > LatestPlayedFrame.Frame) {
+                return string.Empty; 
+            }
+            if (frameNumber == LatestPlayedFrame.Frame && shotNumber > LatestPlayedFrame.shot)
+            {
+                return string.Empty;
+            }
+
             return AllFrames[frameNumber].ShowShotScore(shotNumber);
         }
 
