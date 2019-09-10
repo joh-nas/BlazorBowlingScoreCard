@@ -45,6 +45,12 @@ namespace BlazorBowlingScoreCard.Classes
         {
         }
 
+        public virtual Frame CopyFrame()
+        {
+            var newFrame = new Frame() { One = One, Two = Two, Extra = Extra, Score = Score };
+            return newFrame;
+        }
+
         internal virtual int[] GetPossibleInputs(int shotNumber)
         {
             if (shotNumber == 1) return Enumerable.Range(1, 10).ToArray();
@@ -83,6 +89,21 @@ namespace BlazorBowlingScoreCard.Classes
             }
         }
 
+        public virtual void SetMaxScore(int currentShot)
+        {
+            if (currentShot == 1)
+            {
+                One = 10;
+                Two = 0;
+                Extra = 0;
+            }
+            if (currentShot == 2)
+            {
+                Two = 10 - One;
+                Extra = 0;
+            }
+        }
+        
         public virtual string ShowShotScore(int shotNumber)
         {
             if (shotNumber == 1)
@@ -151,6 +172,11 @@ namespace BlazorBowlingScoreCard.Classes
             if (shotCount == 0) return "-";
             if (shotCount == 10) return "X";
             return shotCount.ToString();
+        }
+
+        public override string ToString()
+        {
+            return $"One: {One}, Two: {Two}, Extra: {Extra}, Score: {Score}";
         }
     }
 }

@@ -18,6 +18,12 @@ namespace BlazorBowlingScoreCard.Classes
         {
         }
 
+        public override Frame CopyFrame()
+        {
+            var newFrame = new LastFrame() { One = One, Two = Two, Extra = Extra, Score = Score };
+            return newFrame;
+        }
+
         internal override int[] GetPossibleInputs(int shotNumber)
         {
             if (shotNumber == 1) return Enumerable.Range(1, 10).ToArray();
@@ -62,6 +68,29 @@ namespace BlazorBowlingScoreCard.Classes
                     break;
                 default:
                     throw new ApplicationException("shotNumber has to be between 1 and 3.");
+            }
+        }
+
+        public override void SetMaxScore(int currentShot)
+        {
+            if (currentShot == 1)
+            {
+                One = 10;
+                Two = 10;
+                Extra = 10;
+            }
+            if (currentShot == 2)
+            {
+                if (One == 10) Two = 10;
+                else Two = 10 - One;
+                Extra = 10;
+            }
+            if (currentShot == 3)
+            {
+                if (One == 10 && Two == 10) Extra = 10;
+                if (One + Two == 10) Extra = 10;
+                if (One == 10 && Two != 10) Extra = 10 - Two;
+                if (One + Two < 10) Extra = 0;
             }
         }
 

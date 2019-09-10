@@ -12,6 +12,7 @@ namespace BlazorBowlingScoreCard.Classes
         public string PlayerName { get; set; }
         public int CurrentFrame { get; set; }
         public int CurrentShot { get; set; }
+        private int _xPos;
         public int XPos { get => _xPos; 
             set 
             {
@@ -24,16 +25,18 @@ namespace BlazorBowlingScoreCard.Classes
         public bool IsSparePossible { get; private set; }
         public bool IsStrikePossible { get; private set; }
         public int SpareShotCount { get; private set; }
-        [Inject]
-        public IJSRuntime JsRuntime { get; set; }
+        public int MaxScore { get; private set; }
 
         public Frames Frames = new Frames();
-        private int _xPos;
+
+        [Inject]
+        public IJSRuntime JsRuntime { get; set; }
 
         public GameScore()
         {
             CurrentFrame = 0;
             CurrentShot = 1;
+            MaxScore = Frames.CalculateMaxScore(CurrentFrame, CurrentShot);
         }
 
         public void AddScore(int score)
@@ -43,7 +46,10 @@ namespace BlazorBowlingScoreCard.Classes
 
             Frames.AddScore(CurrentFrame, CurrentShot, score);
             SetNextShot();
+            Frames.VerifyFrameScore();
             Frames.CalculateScore();
+            MaxScore = Frames.CalculateMaxScore(CurrentFrame, CurrentShot);
+
             StateHasChanged();
         }
 

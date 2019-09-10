@@ -49,6 +49,16 @@ namespace BlazorBowlingScoreCard.Classes
             return curFrame.IsStrikePossible(shotNumber);
         }
 
+        internal void CalculateScore()
+        {
+            new RegularScoreCalculator().CalculateScore(AllFrames);
+        }
+
+        internal int CalculateMaxScore(int frameNumber, int shotNumber)
+        {
+            return new RegularScoreCalculator().CalculateMaxScore(AllFrames, (frameNumber, shotNumber));
+        }
+
         internal bool IsSparePossible(int frameNumber, int shotNumber)
         {
             var curFrame = AllFrames[frameNumber];
@@ -97,54 +107,6 @@ namespace BlazorBowlingScoreCard.Classes
             }
 
             return AllFrames[frameNumber].ShowShotScore(shotNumber);
-        }
-
-        public void CalculateScore()
-        {
-            VerifyFrameScore();
-
-            var score = 0;
-            for (int i = 0; i < 10; i++)
-            {
-                var current = AllFrames[i];
-                score += current.One;
-                score += current.Two;
-                score += current.Extra;
-
-                if (i < 9)
-                {
-                    var next = AllFrames[i + 1];
-                    if (current.One == 10)
-                    {
-                        score += next.One;
-                        if (next.One == 10)
-                        {
-                            if (i + 1 == 9)
-                            {
-                                score += next.Two;
-                            }
-                            else
-                            {
-                                var secondNext = AllFrames[i + 2];
-                                score += secondNext.One;
-                            }
-                        }
-                        else
-                        {
-                            score += next.Two;
-                        }
-                    }
-                    else
-                    {
-                        if (current.One + current.Two == 10)
-                        {
-                            score += next.One;
-                        }
-                    }
-                }
-
-                current.Score = score;
-            }
         }
 
         public void SetTestData()
