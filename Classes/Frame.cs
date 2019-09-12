@@ -103,6 +103,21 @@ namespace BlazorBowlingScoreCard.Classes
                 Extra = 0;
             }
         }
+
+        public virtual void SetMinScore(int currentShot)
+        {
+            if (currentShot == 1)
+            {
+                One = 1;
+                Two = 1;
+                Extra = 0;
+            }
+            if (currentShot == 2)
+            {
+                Two = 1;
+                Extra = 0;
+            }
+        }
         
         public virtual string ShowShotScore(int shotNumber)
         {

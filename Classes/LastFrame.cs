@@ -94,6 +94,28 @@ namespace BlazorBowlingScoreCard.Classes
             }
         }
 
+        public override void SetMinScore(int currentShot)
+        {
+            if (currentShot == 1)
+            {
+                One = 1;
+                Two = 1;
+                Extra = 0;
+            }
+            if (currentShot == 2)
+            {
+                Two = 1;
+                if (One + Two == 10) Extra = 1;
+                else Extra = 0;
+            }
+            if (currentShot == 3)
+            {
+                if (One == 10) Extra = 1;
+                if (One + Two == 10) Extra = 1;
+                if (One + Two < 10) Extra = 0;
+            }
+        }
+
         public override string ShowShotScore(int shotNumber)
         {
             if (shotNumber == 1)

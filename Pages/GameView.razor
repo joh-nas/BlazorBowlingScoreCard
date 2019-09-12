@@ -3,9 +3,18 @@
 @using BlazorBowlingScoreCard.Pages;
 @using BlazorBowlingScoreCard.Classes;
 <h3>Bowling Score Board</h3>
+<div>
+    <label for="cboCalculators">Select Calculator</label>
+    <select @bind="@SelectedCalculator">
+        @foreach (var calculator in Calculators)
+        {
+            <option value="@calculator">@calculator</option>
+        }
+    </select>
+</div>
 @for (int i = 0; i < @Players.Length; i++)
 {
-    <GameScoreView PlayerName="@Players[i]"></GameScoreView>
+    <GameScoreView PlayerName="@Players[i]" Calculator="@SelectedCalculator"></GameScoreView>
 }
 
 <button class="shotResultBtn" @onclick="() => AddPlayer()">+</button>

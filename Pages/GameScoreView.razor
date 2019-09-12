@@ -13,10 +13,12 @@
         }
         <th colspan="3" class="scoreHeader">10</th>
         <th class="totalCol">Total</th>
-        <th class="maxCol">Max</th>
+        <th class="maxCol">Possible</th>
     </tr>
     <tr>
-        <td rowspan="2" class="nameCol nameText"><input class="nameText" @bind="@PlayerName" /></td>
+        <td rowspan="2" class="nameCol nameText">
+            <input class="nameText" @bind="@PlayerName" />
+        </td>
         @for (int i = 0; i < 9; i++)
         {
             var frameNumber = i;
@@ -48,7 +50,7 @@
         </td>
 
         <td rowspan="2" class="totalCol totalText">@Frames[9].Score</td>
-        <td rowspan="2" class="maxCol totalText">@MaxScore</td>
+        <td rowspan="2" class="maxCol totalText">@PossibleScore</td>
     </tr>
     <tr>
         @for (int i = 0; i < 9; i++)

@@ -9,12 +9,34 @@ namespace BlazorBowlingScoreCard.Classes
     public class GameScore : ComponentBase
     {
         [Parameter]
-        public string PlayerName { get; set; }
+        public string PlayerName { 
+            get => playerName; 
+            set 
+            {
+                playerName = value; 
+            } 
+        }
+
+        [Parameter]
+        public string Calculator
+        {
+            set
+            {
+                CreateCalculator(value);
+                Frames.SetScoreCalculator(_scoreCalculator);
+                PossibleScore = Frames.CalculateMaxScore(CurrentFrame, CurrentShot);
+            }
+        }
         public int CurrentFrame { get; set; }
         public int CurrentShot { get; set; }
         private int _xPos;
-        public int XPos { get => _xPos; 
-            set 
+        private IScoreCalculator _scoreCalculator;
+        private string playerName;
+
+        public int XPos
+        {
+            get => _xPos;
+            set
             {
                 _xPos = value;
                 SetFocusInternal(CurrentFrame, CurrentShot);
@@ -25,9 +47,9 @@ namespace BlazorBowlingScoreCard.Classes
         public bool IsSparePossible { get; private set; }
         public bool IsStrikePossible { get; private set; }
         public int SpareShotCount { get; private set; }
-        public int MaxScore { get; private set; }
+        public int PossibleScore { get; private set; }
 
-        public Frames Frames = new Frames();
+        public Frames Frames { get; set; }
 
         [Inject]
         public IJSRuntime JsRuntime { get; set; }
@@ -36,7 +58,14 @@ namespace BlazorBowlingScoreCard.Classes
         {
             CurrentFrame = 0;
             CurrentShot = 1;
-            MaxScore = Frames.CalculateMaxScore(CurrentFrame, CurrentShot);
+            Frames = new Frames();
+        }
+
+        private void CreateCalculator(string calculatorName)
+        {
+            var fullyQualifiedName = "BlazorBowlingScoreCard.Classes." + calculatorName;
+            var type = Type.GetType(fullyQualifiedName);
+            _scoreCalculator = (IScoreCalculator)Activator.CreateInstance(type);
         }
 
         public void AddScore(int score)
@@ -48,7 +77,7 @@ namespace BlazorBowlingScoreCard.Classes
             SetNextShot();
             Frames.VerifyFrameScore();
             Frames.CalculateScore();
-            MaxScore = Frames.CalculateMaxScore(CurrentFrame, CurrentShot);
+            PossibleScore = Frames.CalculateMaxScore(CurrentFrame, CurrentShot);
 
             StateHasChanged();
         }

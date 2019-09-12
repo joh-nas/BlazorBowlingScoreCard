@@ -9,7 +9,8 @@ namespace BlazorBowlingScoreCard.Classes
     {
         public Frame[] AllFrames { get; set; }
         public (int Frame, int shot) LatestPlayedFrame { get; set; } = (0, 0);
-
+        private IScoreCalculator _scoreCalculator;
+        
         public Frames()
         {
             AllFrames = Enumerable
@@ -19,11 +20,13 @@ namespace BlazorBowlingScoreCard.Classes
                     return new Frame(); 
                 })
                 .ToArray();
-
-            //SetTestData();
-            CalculateScore();
         }
 
+        public void SetScoreCalculator(IScoreCalculator scoreCalculator)
+        {
+            _scoreCalculator = scoreCalculator;
+        }
+        
         public void AddScore(int frameNumber, int shotNumber, int score)
         {
             var curFrame = AllFrames[frameNumber];
@@ -51,12 +54,12 @@ namespace BlazorBowlingScoreCard.Classes
 
         internal void CalculateScore()
         {
-            new RegularScoreCalculator().CalculateScore(AllFrames);
+            _scoreCalculator.CalculateScore(AllFrames);
         }
 
         internal int CalculateMaxScore(int frameNumber, int shotNumber)
         {
-            return new RegularScoreCalculator().CalculateMaxScore(AllFrames, (frameNumber, shotNumber));
+            return _scoreCalculator.CalculateMaxScore(AllFrames, (frameNumber, shotNumber));
         }
 
         internal bool IsSparePossible(int frameNumber, int shotNumber)

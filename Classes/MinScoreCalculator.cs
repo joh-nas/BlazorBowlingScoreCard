@@ -5,19 +5,14 @@ using System.Threading.Tasks;
 
 namespace BlazorBowlingScoreCard.Classes
 {
-    public class RegularScoreCalculator : IScoreCalculator
+    public class MinScoreCalculator : IScoreCalculator
     {
-        public RegularScoreCalculator()
-        {
-
-        }
-
         public int CalculateMaxScore(Frame[] frames, (int CurrentFrame, int CurrentShot) currentFrame)
         {
             var newFrames = frames.Select(x => x.CopyFrame()).ToArray();
             for(int i=currentFrame.CurrentFrame; i<10; i++)
             {
-                newFrames[i].SetMaxScore(i == currentFrame.CurrentFrame ? currentFrame.CurrentShot : 1);
+                newFrames[i].SetMinScore(i == currentFrame.CurrentFrame ? currentFrame.CurrentShot : 1);
             }
 
             return CalculateScore(newFrames);
